@@ -1,0 +1,65 @@
+---
+import Base from '../layouts/Base.astro';
+import { JOIN_LINK } from '../data/nav.js';
+import { SHEET_CSV_URL, recordsFromCSV, current, newsHtml } from '../lib/news.js';
+import starterNews from '../data/MUSIC4RES_news.csv?raw';
+
+// News is written into the page at the build (for search engines); the browser
+// then reads the sheet again, so new items show without waiting for a rebuild.
+// Until the sheet is published, the starter file is used.
+let news = [];
+if (SHEET_CSV_URL) {
+  try {
+    const res = await fetch(SHEET_CSV_URL, { signal: AbortSignal.timeout(20000) });
+    if (res.ok) news = recordsFromCSV(await res.text());
+  } catch {}
+} else {
+  news = recordsFromCSV(starterNews);
+}
+const shown = current(news);
+---
+<Base title="Home" path="/">
+  <section class="news" id="news" hidden={!shown.length}>
+    <div class="wrap">
+      <div class="news-box">
+        <h2>News</h2>
+        <div id="news-list" set:html={newsHtml(shown)}></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hl">
+    <div class="wrap">
+      <h2>Highlights</h2>
+      <div class="cards">
+        <p class="card">Music4Resilience creates a <b>community-based music lab</b>: four participatory, hands-on workshops in which <b>youth workers</b> explore music as a tool to support vulnerable young people.</p>
+        <p class="card pink">Workshops connect music with <b>mental health and socio-emotional skills</b>: emotion awareness and regulation, communication, self-confidence and collaboration, supported by <b>easy-to-use music technology</b>.</p>
+        <p class="card">Co-created with practitioners, the materials are <b>accessible, culturally sensitive and transferable</b>, and shared openly so that music-informed practice can take root in <b>youth settings across Luxembourg</b>.</p>
+      </div>
+      <div class="social">
+        <a href="https://www.instagram.com/bemunilu/" target="_blank" rel="noopener"><img src="/images/icon-instagram.png" alt="Instagram" width="24" height="24" /></a>
+        <a href="https://www.linkedin.com/in/lucnijs/" target="_blank" rel="noopener"><img src="/images/icon-linkedin.png" alt="LinkedIn" width="24" height="24" /></a>
+      </div>
+      <p class="join"><a class="btn wide" href={JOIN_LINK}>Join a workshop - Register your interest</a></p>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { SHEET_CSV_URL, recordsFromCSV, current, newsHtml } from '../lib/news.js';
+  if (SHEET_CSV_URL) {
+    // Cache-bust per minute so a sheet edit is not masked by a stale copy.
+    fetch(SHEET_CSV_URL + '&v=' + Math.floor(Date.now() / 60000), { cache: 'no-cache' })
+      .then((res) => { if (!res.ok) throw new Error('HTTP ' + res.status); return res.text(); })
+      .then((text) => {
+        const shown = current(recordsFromCSV(text));
+        const list = document.getElementById('news-list');
+        const fresh = document.createElement('div');
+        fresh.innerHTML = newsHtml(shown);
+        // Redraw only when the news changed, so pictures already showing don't reload.
+        if (fresh.innerHTML !== list.innerHTML) list.innerHTML = fresh.innerHTML;
+        document.getElementById('news').hidden = !shown.length;
+      })
+      .catch(() => {});
+  }
+</script>
