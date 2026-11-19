@@ -1,0 +1,136 @@
+---
+import Base from '../../layouts/Base.astro';
+import { langPaths, pick } from '../../i18n.js';
+
+export function getStaticPaths() { return langPaths(); }
+const { lang } = Astro.props;
+
+// Text with <b>…</b> shows in bold.
+const t = pick(lang, {
+  en: {
+    title: 'Project',
+    what: 'What is Music4Resilience?',
+    intro: 'Music4Resilience is <b>a project that trains and equips youth workers</b> to use music when supporting young people in difficult situations: young people with disabilities or mental health issues, from disadvantaged backgrounds, or in hospital. Youth practitioners are often the <b>first point of contact</b> for young people facing complex personal, social and emotional challenges, yet many lack practical, evidence-based tools. Music4Resilience develops and implements <b>inclusive music workshops</b> across youth centres and supporting organisations in Luxembourg.',
+    why: 'Why?',
+    whyText: 'Three out of four youth workers report a <b>significant rise in mental health-related questions</b> from young people, while most have had little structured training in this area. At the same time, music is a core part of young people\'s lives: it offers <b>emotional support</b> and fosters <b>self-expression, identity and belonging</b>.',
+    whatH: 'What?',
+    whatText: 'The heart of the project is the <b>Music4Resilience community-based lab</b>: a series of four music-informed workshops that offer a space to explore music and musical resources, so that youth workers can engage vulnerable young people through music and promote <b>well-being, social inclusion and employability</b>.',
+    how: 'How?',
+    howText: 'Each workshop is a <b>3-hour, face-to-face, experiential session</b> grounded in mental health and socio-emotional skills methodologies. It combines simple language and visual aids with <b>listening, songwriting, accessible instruments and easy-to-use music technology</b> (e.g., launchpads, Artiphon Orba &amp; Chorda, Roland Aira beat machines). The voices of participants guide the design and content of the workshops.',
+    impact: 'Impact',
+    impactList: [
+      'We aim to <b>strengthen the confidence and capacity</b> of youth practitioners to use music in their daily work with young people.',
+      'We aim to provide <b>accessible, culturally adaptable music resources</b> that are practical and transferable to different youth settings.',
+      'We aim to support youth workers <b>not only as service providers, but also as individuals</b>, by embedding reflective music practices and self-care in the training.',
+      'We aim to contribute to the <b>recognition of youth work</b> as a profession that safeguards young people\'s well-being and future.',
+    ],
+    evaluation: 'Evaluation',
+    evaluationText: 'The project is evaluated throughout, using <b>pre/post questionnaires</b> (well-being, self-confidence, emotional regulation, communication), <b>feedback forms</b> after each workshop, and <b>self-assessment of professional competence</b> in mental health literacy, emotional support and music methodologies.',
+    aim: 'Final Aim',
+    aimText: 'Workshop materials will remain <b>available online</b> after the project and feed into IFEN training, courses offered by Luxembourgish associations, and the <b>inclusive music education</b> strand of the University of Luxembourg Bachelor in Music Education.',
+    workshops: 'The workshops',
+    workshopsIntro: 'Four in-person workshops, <b>January to April 2027</b>. Each includes an introduction, a detailed programme outline, guidelines for implementation (group size, timing, roles, ethics, logistics), and tools for evaluation and self-reflection.',
+    ws: [
+      ['Music and Movement', 'Emotion awareness, labelling and regulation.'],
+      ['Musical Care', 'Communication (listening, presenting, assertiveness) and self-regulation (self-confidence, agency, self-efficacy).'],
+      ['Inclusive Music Making', 'Planning and problem-solving: decision making, navigating resources, organisation.'],
+      ['Music, Technology and Disability', 'Creativity and collaboration with accessible music technologies.'],
+    ],
+    funded: 'Music4Resilience is a project of the <a class="rust" href="https://www.uni.lu/fhse-en/" target="_blank" rel="noopener">Department of Education and Social Work</a> at the University of Luxembourg, supported by the <a class="blue" href="https://www.loschfondation.lu" target="_blank" rel="noopener">André Losch Fondation</a>',
+  },
+  fr: {
+    title: 'Projet',
+    what: 'Qu’est-ce que Music4Resilience ?',
+    intro: 'Music4Resilience est <b>un projet qui forme et outille les professionnels de la jeunesse</b> pour utiliser la musique lorsqu’ils accompagnent des jeunes en situation difficile : jeunes en situation de handicap ou confrontés à des problèmes de santé mentale, issus de milieux défavorisés ou hospitalisés. Les professionnels de la jeunesse sont souvent le <b>premier point de contact</b> pour les jeunes confrontés à des difficultés personnelles, sociales et émotionnelles complexes, mais beaucoup manquent d’outils pratiques fondés sur des données probantes. Music4Resilience conçoit et met en œuvre des <b>ateliers musicaux inclusifs</b> dans les maisons de jeunes et les organisations partenaires au Luxembourg.',
+    why: 'Pourquoi ?',
+    whyText: 'Trois professionnels de la jeunesse sur quatre constatent une <b>nette augmentation des questions liées à la santé mentale</b> chez les jeunes, alors que la plupart n’ont reçu que peu de formation structurée dans ce domaine. Dans le même temps, la musique occupe une place essentielle dans la vie des jeunes : elle apporte un <b>soutien émotionnel</b> et favorise <b>l’expression de soi, l’identité et le sentiment d’appartenance</b>.',
+    whatH: 'Quoi ?',
+    whatText: 'Au cœur du projet se trouve le <b>laboratoire communautaire Music4Resilience</b> : une série de quatre ateliers fondés sur la musique qui offrent un espace pour explorer la musique et les ressources musicales, afin que les professionnels de la jeunesse puissent toucher les jeunes vulnérables par la musique et promouvoir <b>le bien-être, l’inclusion sociale et l’employabilité</b>.',
+    how: 'Comment ?',
+    howText: 'Chaque atelier est une <b>séance expérientielle de 3 heures, en présentiel</b>, fondée sur des méthodologies issues de la santé mentale et des compétences socio-émotionnelles. Il associe un langage simple et des supports visuels à <b>l’écoute, l’écriture de chansons, des instruments accessibles et des technologies musicales faciles à utiliser</b> (p. ex. launchpads, Artiphon Orba &amp; Chorda, boîtes à rythmes Roland Aira). La parole des participants guide la conception et le contenu des ateliers.',
+    impact: 'Impact',
+    impactList: [
+      'Nous voulons <b>renforcer la confiance et les capacités</b> des professionnels de la jeunesse à utiliser la musique dans leur travail quotidien avec les jeunes.',
+      'Nous voulons proposer des <b>ressources musicales accessibles et culturellement adaptables</b>, pratiques et transférables à différents contextes jeunesse.',
+      'Nous voulons soutenir les professionnels de la jeunesse <b>non seulement en tant que prestataires, mais aussi en tant que personnes</b>, en intégrant des pratiques musicales réflexives et le soin de soi dans la formation.',
+      'Nous voulons contribuer à la <b>reconnaissance du travail de jeunesse</b> comme une profession qui protège le bien-être et l’avenir des jeunes.',
+    ],
+    evaluation: 'Évaluation',
+    evaluationText: 'Le projet est évalué tout au long de son déroulement à l’aide de <b>questionnaires avant/après</b> (bien-être, confiance en soi, régulation émotionnelle, communication), de <b>formulaires de retour</b> après chaque atelier et d’une <b>auto-évaluation des compétences professionnelles</b> en littératie en santé mentale, en soutien émotionnel et en méthodologies musicales.',
+    aim: 'Objectif final',
+    aimText: 'Les supports des ateliers resteront <b>disponibles en ligne</b> après le projet et alimenteront les formations de l’IFEN, des cours proposés par des associations luxembourgeoises ainsi que le volet <b>éducation musicale inclusive</b> du Bachelor en éducation musicale de l’Université du Luxembourg.',
+    workshops: 'Les ateliers',
+    workshopsIntro: 'Quatre ateliers en présentiel, <b>de janvier à avril 2027</b>. Chacun comprend une introduction, un programme détaillé, des lignes directrices pour la mise en œuvre (taille du groupe, durée, rôles, éthique, logistique) et des outils d’évaluation et d’autoréflexion.',
+    ws: [
+      ['Musique et mouvement', 'Prise de conscience, identification et régulation des émotions.'],
+      ['Le soin par la musique', 'Communication (écoute, prise de parole, affirmation de soi) et autorégulation (confiance en soi, capacité d’agir, sentiment d’efficacité personnelle).'],
+      ['Faire de la musique de manière inclusive', 'Planification et résolution de problèmes : prise de décision, utilisation des ressources, organisation.'],
+      ['Musique, technologie et handicap', 'Créativité et collaboration grâce à des technologies musicales accessibles.'],
+    ],
+    funded: 'Music4Resilience est un projet du <a class="rust" href="https://www.uni.lu/fhse-en/" target="_blank" rel="noopener">Département des sciences de l’éducation et du travail social</a> de l’Université du Luxembourg, soutenu par l’<a class="blue" href="https://www.loschfondation.lu" target="_blank" rel="noopener">André Losch Fondation</a>',
+  },
+  de: {
+    title: 'Projekt',
+    what: 'Was ist Music4Resilience?',
+    intro: 'Music4Resilience ist <b>ein Projekt, das Fachkräfte der Jugendarbeit schult und ausstattet</b>, damit sie Musik einsetzen können, wenn sie junge Menschen in schwierigen Lebenslagen begleiten: junge Menschen mit Behinderungen oder psychischen Belastungen, aus benachteiligten Verhältnissen oder im Krankenhaus. Fachkräfte der Jugendarbeit sind oft die <b>erste Anlaufstelle</b> für junge Menschen mit komplexen persönlichen, sozialen und emotionalen Herausforderungen, doch vielen fehlen praktische, evidenzbasierte Werkzeuge. Music4Resilience entwickelt <b>inklusive Musikworkshops</b> und setzt sie in Jugendhäusern und unterstützenden Organisationen in Luxemburg um.',
+    why: 'Warum?',
+    whyText: 'Drei von vier Fachkräften der Jugendarbeit berichten von einer <b>deutlichen Zunahme von Fragen zur psychischen Gesundheit</b> bei jungen Menschen, während die meisten in diesem Bereich kaum strukturiert geschult wurden. Gleichzeitig ist Musik ein zentraler Teil im Leben junger Menschen: Sie bietet <b>emotionale Unterstützung</b> und fördert <b>Selbstausdruck, Identität und Zugehörigkeit</b>.',
+    whatH: 'Was?',
+    whatText: 'Herzstück des Projekts ist das <b>gemeinschaftsbasierte Music4Resilience-Labor</b>: eine Reihe von vier musikbasierten Workshops, die Raum bieten, Musik und musikalische Ressourcen zu erkunden, damit Fachkräfte der Jugendarbeit vulnerable junge Menschen über Musik erreichen und <b>Wohlbefinden, soziale Inklusion und Beschäftigungsfähigkeit</b> fördern können.',
+    how: 'Wie?',
+    howText: 'Jeder Workshop ist eine <b>dreistündige, erfahrungsorientierte Präsenzveranstaltung</b>, die auf Methoden aus dem Bereich psychische Gesundheit und sozial-emotionale Kompetenzen beruht. Er verbindet einfache Sprache und visuelle Hilfen mit <b>Zuhören, Songwriting, zugänglichen Instrumenten und einfach zu bedienender Musiktechnologie</b> (z. B. Launchpads, Artiphon Orba &amp; Chorda, Roland-Aira-Beatmaschinen). Die Stimmen der Teilnehmenden prägen Gestaltung und Inhalt der Workshops.',
+    impact: 'Wirkung',
+    impactList: [
+      'Wir möchten <b>das Selbstvertrauen und die Kompetenzen</b> von Fachkräften der Jugendarbeit stärken, Musik in ihrer täglichen Arbeit mit jungen Menschen einzusetzen.',
+      'Wir möchten <b>zugängliche, kulturell anpassbare musikalische Ressourcen</b> bereitstellen, die praxisnah und auf verschiedene Bereiche der Jugendarbeit übertragbar sind.',
+      'Wir möchten Fachkräfte der Jugendarbeit <b>nicht nur in ihrer beruflichen Rolle, sondern auch als Menschen</b> unterstützen, indem reflexive Musikpraxis und Selbstfürsorge Teil der Schulung sind.',
+      'Wir möchten zur <b>Anerkennung der Jugendarbeit</b> als Beruf beitragen, der das Wohlbefinden und die Zukunft junger Menschen schützt.',
+    ],
+    evaluation: 'Evaluation',
+    evaluationText: 'Das Projekt wird durchgehend evaluiert: mit <b>Vorher-Nachher-Fragebögen</b> (Wohlbefinden, Selbstvertrauen, Emotionsregulation, Kommunikation), <b>Feedbackbögen</b> nach jedem Workshop und einer <b>Selbsteinschätzung der beruflichen Kompetenz</b> in Gesundheitskompetenz zur psychischen Gesundheit, emotionaler Unterstützung und musikalischen Methoden.',
+    aim: 'Ziel',
+    aimText: 'Die Workshop-Materialien bleiben nach Projektende <b>online verfügbar</b> und fließen in Weiterbildungen des IFEN, in Kurse luxemburgischer Vereinigungen und in den Schwerpunkt <b>inklusive Musikpädagogik</b> des Bachelors in Musikpädagogik der Universität Luxemburg ein.',
+    workshops: 'Die Workshops',
+    workshopsIntro: 'Vier Präsenzworkshops, <b>Januar bis April 2027</b>. Jeder umfasst eine Einführung, einen ausführlichen Programmablauf, Leitlinien für die Umsetzung (Gruppengröße, Zeitplan, Rollen, Ethik, Logistik) sowie Werkzeuge für Evaluation und Selbstreflexion.',
+    ws: [
+      ['Musik und Bewegung', 'Emotionen wahrnehmen, benennen und regulieren.'],
+      ['Musikalische Fürsorge', 'Kommunikation (Zuhören, Präsentieren, Durchsetzungsvermögen) und Selbstregulation (Selbstvertrauen, Handlungsfähigkeit, Selbstwirksamkeit).'],
+      ['Inklusives Musizieren', 'Planen und Probleme lösen: Entscheidungen treffen, Ressourcen nutzen, Organisation.'],
+      ['Musik, Technologie und Behinderung', 'Kreativität und Zusammenarbeit mit barrierefreien Musiktechnologien.'],
+    ],
+    funded: 'Music4Resilience ist ein Projekt des <a class="rust" href="https://www.uni.lu/fhse-en/" target="_blank" rel="noopener">Department of Education and Social Work</a> der Universität Luxemburg, gefördert von der <a class="blue" href="https://www.loschfondation.lu" target="_blank" rel="noopener">André Losch Fondation</a>',
+  },
+});
+const sections = [[t.why, t.whyText], [t.whatH, t.whatText], [t.how, t.howText]];
+---
+<Base title={t.title} path="/project" lang={lang}>
+  <section class="project-intro">
+    <div class="wrap">
+      <h2 class="title">{t.what}</h2>
+      <p set:html={t.intro} />
+    </div>
+  </section>
+  <section class="project-body">
+    <div class="wrap">
+      {sections.map(([h, p]) => <><h4>{h}</h4><p set:html={p} /></>)}
+      <h4>{t.impact}</h4>
+      <ul>
+        {t.impactList.map((li) => <li set:html={li} />)}
+      </ul>
+      <h4>{t.evaluation}</h4>
+      <p set:html={t.evaluationText} />
+      <h4>{t.aim}</h4>
+      <p set:html={t.aimText} />
+    </div>
+  </section>
+  <section class="workshops" id="workshops">
+    <div class="wrap">
+      <h2>{t.workshops}</h2>
+      <p class="intro" set:html={t.workshopsIntro} />
+      <div class="ws-grid">
+        {t.ws.map(([h, p], i) => <div class="ws"><p class="num">{i + 1}</p><h3>{h}</h3><p>{p}</p></div>)}
+      </div>
+    </div>
+  </section>
+  <p class="funded wrap" set:html={t.funded} />
+</Base>

@@ -1,5 +1,6 @@
 // News box on the home page, from the MUSIC4RES_news sheet (columns Text, Link,
-// Picture, Until, Publish), as on the other sites. Used when the site is built,
+// Picture, Until, Publish, and optionally Text FR / Text DE for the French and
+// German pages; an empty translation shows the English Text), as on the other sites. Used when the site is built,
 // by the picture copies, and in the visitor's browser (to read the sheet live).
 // Until the sheet is published, the starter file src/data/MUSIC4RES_news.csv is used.
 
@@ -60,8 +61,11 @@ export function recordsFromCSV(text) {
   return rows.slice(1).map((r) => {
     const get = (name) => String(r[col(name)] ?? '').trim();
     if (/^(n|no|false|0|hide)$/i.test(get('publish'))) return null;
+    const clean = (v) => v.replace(/\s+/g, ' ');
     return {
-      text: get('text').replace(/\s+/g, ' '),
+      text: clean(get('text')),
+      text_fr: clean(get('text fr')),
+      text_de: clean(get('text de')),
       link: get('link') && webAddress(get('link')),
       picture: get('picture') && webAddress(get('picture')),
       until: untilDate(get('until')),
@@ -86,11 +90,15 @@ function pictureHtml(link) {
 // A link to this site itself (www.music4resilience.lu/…) stays on the current address.
 const local = (u) => String(u || '').replace(/^https?:\/\/(www\.)?music4resilience\.lu(?=\/|$)/i, '') || (u ? '/' : '');
 
-export function newsHtml(recs) {
+export function newsHtml(recs, seeHere = 'see here', lang = 'en') {
   return [...recs].reverse().map((r) => {
-    r = { ...r, link: local(r.link) };
+    r = { ...r, link: local(r.link), text: r['text_' + lang] || r.text };
+    // A link to a page of this site goes to the same page in the visitor's language.
+    if (lang !== 'en' && /^\/(?!\/)/.test(r.link) && !/^\/(fr|de)(\/|$)/.test(r.link) && !/\.[a-z0-9]+$/i.test(r.link)) {
+      r.link = r.link === '/' ? `/${lang}` : `/${lang}${r.link}`;
+    }
     const ext = /^https?:/i.test(r.link || '');
-    const see = r.link ? ` <a class="more" href="${esc(r.link)}"${ext ? ' target="_blank" rel="noopener"' : ''}>see here</a>` : '';
+    const see = r.link ? ` <a class="more" href="${esc(r.link)}"${ext ? ' target="_blank" rel="noopener"' : ''}>${esc(seeHere)}</a>` : '';
     return `<div class="news-item"><p>${textHtml(r.text)}${see}</p>${pictureHtml(r.picture)}</div>`;
   }).join('');
 }

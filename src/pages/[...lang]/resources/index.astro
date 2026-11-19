@@ -1,0 +1,52 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Blocks from '../../../components/Blocks.astro';
+import { langPaths, href, pick } from '../../../i18n.js';
+
+export function getStaticPaths() { return langPaths(); }
+const { lang } = Astro.props;
+
+const t = pick(lang, {
+  en: {
+    title: 'Resources',
+    intro: 'Materials for youth workers who want to use music in their work with young people.',
+    items: [
+      ['Workshops', 'The four Music4Resilience workshops: programme, guidelines and materials.'],
+      ['Manual & Workbook', 'The practitioner manual and the accompanying workbook.'],
+      ['Online course', 'Self-paced modules on music, well-being and youth work.'],
+      ['Reports', 'Project reports and evaluation results.'],
+    ],
+  },
+  fr: {
+    title: 'Ressources',
+    intro: 'Des supports pour les professionnels de la jeunesse qui souhaitent utiliser la musique dans leur travail avec les jeunes.',
+    items: [
+      ['Ateliers', 'Les quatre ateliers Music4Resilience : programme, lignes directrices et supports.'],
+      ['Manuel & cahier d’exercices', 'Le manuel pour les praticiens et le cahier d’exercices qui l’accompagne.'],
+      ['Cours en ligne', 'Des modules à suivre à son rythme sur la musique, le bien-être et le travail de jeunesse.'],
+      ['Rapports', 'Rapports du projet et résultats de l’évaluation.'],
+    ],
+  },
+  de: {
+    title: 'Ressourcen',
+    intro: 'Materialien für Fachkräfte der Jugendarbeit, die Musik in ihrer Arbeit mit jungen Menschen einsetzen möchten.',
+    items: [
+      ['Workshops', 'Die vier Music4Resilience-Workshops: Programm, Leitfäden und Materialien.'],
+      ['Handbuch & Arbeitsheft', 'Das Handbuch für die Praxis und das begleitende Arbeitsheft.'],
+      ['Online-Kurs', 'Module im eigenen Tempo zu Musik, Wohlbefinden und Jugendarbeit.'],
+      ['Berichte', 'Projektberichte und Evaluationsergebnisse.'],
+    ],
+  },
+});
+const paths = ['/resources/workshops', '/resources/manual-workbook', '/resources/online-course', '/resources/reports'];
+const items = t.items.map(([title, text], i) => ({ title, text, href: href(lang, paths[i]) }));
+---
+<Base title={t.title} path="/resources" lang={lang}>
+  <section class="resources">
+    <div class="wrap">
+      <h2 class="title">{t.title}</h2>
+      <p class="intro">{t.intro}</p>
+      <Blocks items={items} lang={lang} />
+    </div>
+  </section>
+</Base>

@@ -1,8 +1,9 @@
 ---
 // "Resources › Workshops › Workshop 1" trail at the top of a subpage. The last item is the current page.
-interface Props { trail: { label: string; href?: string }[] }
-const { trail } = Astro.props;
-const all = [{ label: 'Resources', href: '/resources' }, ...trail];
+import { href, ui } from '../i18n.js';
+interface Props { trail: { label: string; href?: string }[]; lang?: string }
+const { trail, lang = 'en' } = Astro.props;
+const all = [{ label: ui[lang].nav['/resources'], href: href(lang, '/resources') }, ...trail];
 ---
 <p class="crumbs">
   {all.map((c, i) => (

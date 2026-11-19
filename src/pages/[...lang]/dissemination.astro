@@ -1,0 +1,36 @@
+---
+import Base from '../../layouts/Base.astro';
+import { langPaths, pick } from '../../i18n.js';
+
+export function getStaticPaths() { return langPaths(); }
+const { lang } = Astro.props;
+const t = pick(lang, {
+  en: {
+    title: 'Dissemination', materials: 'Workshop materials',
+    materialsText: 'Practical music ideas and hands-on activities from the workshops will be shared here as the workshops take place (January to April 2027).',
+    publications: 'Publications', lectures: 'Lectures/Presentations', soon: 'Coming soon.',
+  },
+  fr: {
+    title: 'Diffusion', materials: 'Supports des ateliers',
+    materialsText: 'Des idées musicales pratiques et des activités concrètes issues des ateliers seront partagées ici au fil des ateliers (de janvier à avril 2027).',
+    publications: 'Publications', lectures: 'Conférences/Présentations', soon: 'Bientôt disponible.',
+  },
+  de: {
+    title: 'Verbreitung', materials: 'Workshop-Materialien',
+    materialsText: 'Praktische musikalische Ideen und Aktivitäten aus den Workshops werden hier geteilt, sobald die Workshops stattfinden (Januar bis April 2027).',
+    publications: 'Publikationen', lectures: 'Vorträge/Präsentationen', soon: 'Demnächst verfügbar.',
+  },
+});
+---
+<Base title={t.title} path="/dissemination" lang={lang}>
+  <section class="diss">
+    <div class="wrap">
+      <h2>{t.materials}</h2>
+      <p class="item none">{t.materialsText}</p>
+      <h2>{t.publications}</h2>
+      <p class="item none">{t.soon}</p>
+      <h2>{t.lectures}</h2>
+      <p class="item none">{t.soon}</p>
+    </div>
+  </section>
+</Base>

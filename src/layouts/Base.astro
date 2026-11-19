@@ -1,16 +1,22 @@
 ---
 import '../styles/site.css';
 import { nav } from '../data/nav.js';
+import { LANGS, LANG_NAMES, href, ui } from '../i18n.js';
 
-interface Props { title: string; description?: string; path: string; noindex?: boolean }
-const { title, description = 'Music4Resilience: community-based music labs that train and equip youth workers in Luxembourg to support vulnerable young people through music. A University of Luxembourg project supported by the André Losch Fondation.', path, noindex = false } = Astro.props;
+// path is the page's English address (/project); lang says which copy this is.
+interface Props { title: string; description?: string; path: string; lang?: string; noindex?: boolean }
+const { title, path, lang = 'en', noindex = false } = Astro.props;
+const t = ui[lang];
+const description = Astro.props.description ?? t.description;
 
 const site = Astro.site ?? 'https://www.music4resilience.lu';
-const canonical = new URL(path === '/' ? '/' : `${path}/`, site).href;
-const fullTitle = path === '/' ? 'Music4Resilience | music & youth work' : `${title} | Music4Resilience`;
+const urlOf = (l) => { const h = href(l, path); return new URL(h === '/' ? '/' : `${h}/`, site).href; };
+const canonical = urlOf(lang);
+const fullTitle = path === '/' ? t.homeTitle : `${title} | Music4Resilience`;
+const ogLocale = { en: 'en_GB', fr: 'fr_LU', de: 'de_LU' };
 ---
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -18,25 +24,35 @@ const fullTitle = path === '/' ? 'Music4Resilience | music & youth work' : `${ti
     <meta name="description" content={description} />
     <meta name="keywords" content="university of luxembourg, youth work, youth workers, music, mental health, well-being, resilience, inclusion, community music, music technology, André Losch Fondation" />
     {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+    {!noindex && LANGS.map((l) => <link rel="alternate" hreflang={l} href={urlOf(l)} />)}
+    {!noindex && <link rel="alternate" hreflang="x-default" href={urlOf('en')} />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Music4Resilience" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={ogLocale[lang]} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,700;0,6..12,800;1,6..12,300&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
   </head>
   <body>
     <header class="site-header">
-      <p class="brand"><a href="/">Music<span class="four">4</span>Resilience</a></p>
-      <p class="tagline">Building <em>Resilience</em> through <em>Music</em> in Youth Work</p>
+      <nav class="langs" aria-label={t.language}>
+        <ul>
+          {LANGS.map((l) => (
+            <li><a href={href(l, path)} hreflang={l} lang={l} title={LANG_NAMES[l]} aria-current={l === lang ? 'true' : undefined}>{l.toUpperCase()}</a></li>
+          ))}
+        </ul>
+      </nav>
+      <p class="brand"><a href={href(lang, '/')}>Music<span class="four">4</span>Resilience</a></p>
+      <p class="tagline" set:html={t.tagline} />
       <nav class="menu" aria-label="Site">
-        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu-list">Menu</button>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu-list">{t.menu}</button>
         <ul id="menu-list">
-          {nav.map((item) => (
-            <li><a href={item.href} aria-current={item.href === path || (item.href !== '/' && path.startsWith(item.href + '/')) ? 'page' : undefined}>{item.label}</a></li>
+          {nav.map((p) => (
+            <li><a href={href(lang, p)} aria-current={p === path || (p !== '/' && path.startsWith(p + '/')) ? 'page' : undefined}>{t.nav[p]}</a></li>
           ))}
         </ul>
       </nav>
@@ -52,7 +68,7 @@ const fullTitle = path === '/' ? 'Music4Resilience | music & youth work' : `${ti
         <img src="/images/logo-unilu.jpg" alt="Université du Luxembourg" width="93" height="56" />
         <span class="logo-text">André Losch Fondation</span>
       </div>
-      <p>Copyright © Université du Luxembourg 2026. All rights reserved</p>
+      <p>{t.copyright}</p>
     </footer>
 
     <script is:inline>

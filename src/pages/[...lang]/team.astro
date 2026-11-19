@@ -1,0 +1,57 @@
+---
+import Base from '../../layouts/Base.astro';
+import { langPaths, pick } from '../../i18n.js';
+
+export function getStaticPaths() { return langPaths(); }
+const { lang } = Astro.props;
+const t = pick(lang, {
+  en: {
+    title: 'Team', pis: 'Principal Investigators', dept: 'Department of Education and Social Work', page: 'UniLu webpage',
+    potheiniRole: 'Assistant Professor',
+    potheiniBio: 'Background in music therapy and early childhood special education, with extensive experience as a practitioner, educator and researcher coordinating public outreach initiatives and research projects on the use of music to promote well-being.',
+    lucRole: 'Associate Professor in Early Childhood Music Education',
+    lucBio: 'Background as teacher and researcher, focusing on innovative technologies and creativity. Supervisor of projects with vulnerable persons and co-founder of the Jonet Chair on Social Action and Music Making.',
+  },
+  fr: {
+    title: 'Équipe', pis: 'Chercheurs principaux', dept: 'Département des sciences de l’éducation et du travail social', page: 'Page web uni.lu',
+    potheiniRole: 'Professeure assistante',
+    potheiniBio: 'Formée en musicothérapie et en éducation spécialisée de la petite enfance, elle a une longue expérience de praticienne, d’enseignante et de chercheuse, et coordonne des initiatives de sensibilisation du public et des projets de recherche sur l’utilisation de la musique pour favoriser le bien-être.',
+    lucRole: 'Professeur associé en éducation musicale de la petite enfance',
+    lucBio: 'Enseignant et chercheur de formation, il s’intéresse aux technologies innovantes et à la créativité. Il encadre des projets avec des personnes vulnérables et est cofondateur de la Chaire Jonet sur l’action sociale et la pratique musicale.',
+  },
+  de: {
+    title: 'Team', pis: 'Projektleitung', dept: 'Department of Education and Social Work', page: 'Webseite uni.lu',
+    potheiniRole: 'Assistenzprofessorin',
+    potheiniBio: 'Hintergrund in Musiktherapie und frühkindlicher Sonderpädagogik, mit langjähriger Erfahrung als Praktikerin, Lehrende und Forscherin; koordiniert Initiativen der Öffentlichkeitsarbeit und Forschungsprojekte zum Einsatz von Musik zur Förderung des Wohlbefindens.',
+    lucRole: 'Associate Professor für frühkindliche Musikpädagogik',
+    lucBio: 'Hintergrund als Lehrer und Forscher mit Schwerpunkt auf innovativen Technologien und Kreativität. Betreut Projekte mit vulnerablen Menschen und ist Mitbegründer des Jonet-Lehrstuhls für soziales Handeln und Musizieren.',
+  },
+});
+---
+<Base title={t.title} path="/team" lang={lang}>
+  <section class="team">
+    <div class="wrap">
+      <h2 id="pis">{t.pis}</h2>
+      <div class="person">
+        <img src="/images/team-potheini-vaiouli.jpg" alt="Potheini Vaiouli" loading="lazy">
+        <div class="lines">
+          <p class="name">Potheini Vaiouli</p>
+          <p>{t.potheiniRole}</p>
+          <p>{t.dept}</p>
+          <p class="bio">{t.potheiniBio}</p>
+          <p><a href="https://www.uni.lu/fhse-en/people/potheini-vaiouli/" target="_blank" rel="noopener">{t.page}</a></p>
+        </div>
+      </div>
+      <div class="person">
+        <img src="/images/team-luc-nijs.jpg" alt="Luc Nijs" loading="lazy">
+        <div class="lines">
+          <p class="name">Luc Nijs</p>
+          <p>{t.lucRole}</p>
+          <p>{t.dept}</p>
+          <p class="bio">{t.lucBio}</p>
+          <p><a href="https://www.uni.lu/fhse-en/people/luc-nijs/" target="_blank" rel="noopener">{t.page}</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

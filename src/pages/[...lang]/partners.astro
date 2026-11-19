@@ -1,0 +1,87 @@
+---
+import Base from '../../layouts/Base.astro';
+import { langPaths, pick } from '../../i18n.js';
+
+export function getStaticPaths() { return langPaths(); }
+const { lang } = Astro.props;
+const t = pick(lang, {
+  en: {
+    title: 'Partners', partners: 'Partners', funding: 'Funding',
+    intro: 'Music4Resilience is carried out together with organisations that work with young people every day. They help us reach youth workers, raise awareness, and bring the community music lab into their own practice.',
+    recruitAware: 'Recruitment & awareness', recruitImpl: 'Recruitment & implementation', funder: 'Funder', host: 'Host institution',
+    fedas: 'Federation of social and socio-educational service providers in Luxembourg. Supports the recruitment of participants and raises awareness of the project.',
+    eme: 'Brings music to people who have little access to it, such as people in hospitals, care homes and social institutions. Supports recruitment and raises awareness.',
+    redcross: 'Recruits participants and implements the community music lab workshop content with youth workers in its organisation.',
+    losch: 'Music4Resilience is supported by the André Losch Fondation (2026–2027).',
+    uni: 'University of Luxembourg', uniText: 'Department of Education and Social Work, Belval Campus.',
+  },
+  fr: {
+    title: 'Partenaires', partners: 'Partenaires', funding: 'Financement',
+    intro: 'Music4Resilience est mené avec des organisations qui travaillent chaque jour avec des jeunes. Elles nous aident à atteindre les professionnels de la jeunesse, à faire connaître le projet et à intégrer le laboratoire musical communautaire dans leur propre pratique.',
+    recruitAware: 'Recrutement & sensibilisation', recruitImpl: 'Recrutement & mise en œuvre', funder: 'Bailleur de fonds', host: 'Institution d’accueil',
+    fedas: 'Fédération des prestataires de services sociaux et socio-éducatifs au Luxembourg. Soutient le recrutement des participants et fait connaître le projet.',
+    eme: 'Apporte la musique aux personnes qui y ont peu accès, par exemple dans les hôpitaux, les maisons de soins et les institutions sociales. Soutient le recrutement et fait connaître le projet.',
+    redcross: 'Recrute des participants et met en œuvre le contenu des ateliers du laboratoire musical communautaire avec les professionnels de la jeunesse de son organisation.',
+    losch: 'Music4Resilience est soutenu par l’André Losch Fondation (2026–2027).',
+    uni: 'Université du Luxembourg', uniText: 'Département des sciences de l’éducation et du travail social, Campus Belval.',
+  },
+  de: {
+    title: 'Partner', partners: 'Partner', funding: 'Förderung',
+    intro: 'Music4Resilience wird gemeinsam mit Organisationen umgesetzt, die täglich mit jungen Menschen arbeiten. Sie helfen uns, Fachkräfte der Jugendarbeit zu erreichen, auf das Projekt aufmerksam zu machen und das gemeinschaftliche Musiklabor in ihre eigene Praxis zu bringen.',
+    recruitAware: 'Rekrutierung & Sensibilisierung', recruitImpl: 'Rekrutierung & Umsetzung', funder: 'Förderer', host: 'Trägerinstitution',
+    fedas: 'Dachverband der Anbieter sozialer und sozialpädagogischer Dienste in Luxemburg. Unterstützt die Rekrutierung von Teilnehmenden und macht auf das Projekt aufmerksam.',
+    eme: 'Bringt Musik zu Menschen, die wenig Zugang zu ihr haben, etwa in Krankenhäusern, Pflegeheimen und sozialen Einrichtungen. Unterstützt die Rekrutierung und macht auf das Projekt aufmerksam.',
+    redcross: 'Rekrutiert Teilnehmende und setzt die Inhalte der Workshops des gemeinschaftlichen Musiklabors mit den Fachkräften der Jugendarbeit in der eigenen Organisation um.',
+    losch: 'Music4Resilience wird von der André Losch Fondation gefördert (2026–2027).',
+    uni: 'Universität Luxemburg', uniText: 'Department of Education and Social Work, Campus Belval.',
+  },
+});
+---
+<Base title={t.title} path="/partners" lang={lang}>
+  <section class="partners">
+    <div class="wrap">
+      <p class="intro" style="margin-top:30px">{t.intro}</p>
+      <h2>{t.partners}</h2>
+      <div class="partner-grid">
+        <div class="partner">
+          <div class="logo"><span class="logo-text">FEDAS</span></div>
+          <h3>FEDAS Luxembourg</h3>
+          <p class="role">{t.recruitAware}</p>
+          <p>{t.fedas}</p>
+          <a class="link" href="https://www.fedas.lu" target="_blank" rel="noopener">fedas.lu</a>
+        </div>
+        <div class="partner pink">
+          <div class="logo"><span class="logo-text">Fondation EME</span></div>
+          <h3>Fondation EME</h3>
+          <p class="role">{t.recruitAware}</p>
+          <p>{t.eme}</p>
+          <a class="link" href="https://www.fondation-eme.lu" target="_blank" rel="noopener">fondation-eme.lu</a>
+        </div>
+        <div class="partner">
+          <div class="logo"><span class="logo-text">Croix-Rouge luxembourgeoise</span></div>
+          <h3>Croix-Rouge luxembourgeoise</h3>
+          <p class="role">{t.recruitImpl}</p>
+          <p>{t.redcross}</p>
+          <a class="link" href="https://www.croix-rouge.lu" target="_blank" rel="noopener">croix-rouge.lu</a>
+        </div>
+      </div>
+      <h2>{t.funding}</h2>
+      <div class="partner-grid">
+        <div class="partner pink">
+          <div class="logo"><span class="logo-text">André Losch Fondation</span></div>
+          <h3>André Losch Fondation</h3>
+          <p class="role">{t.funder}</p>
+          <p>{t.losch}</p>
+          <a class="link" href="https://www.loschfondation.lu" target="_blank" rel="noopener">loschfondation.lu</a>
+        </div>
+        <div class="partner">
+          <div class="logo"><img src="/images/logo-unilu.jpg" alt="Université du Luxembourg"></div>
+          <h3>{t.uni}</h3>
+          <p class="role">{t.host}</p>
+          <p>{t.uniText}</p>
+          <a class="link" href="https://www.uni.lu" target="_blank" rel="noopener">uni.lu</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

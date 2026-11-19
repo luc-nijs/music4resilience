@@ -1,0 +1,96 @@
+---
+import Base from '../../layouts/Base.astro';
+import { JOIN_LINK } from '../../data/nav.js';
+import { SHEET_CSV_URL, recordsFromCSV, current, newsHtml } from '../../lib/news.js';
+import { langPaths, href, pick, ui } from '../../i18n.js';
+import starterNews from '../../data/MUSIC4RES_news.csv?raw';
+
+export function getStaticPaths() { return langPaths(); }
+const { lang } = Astro.props;
+
+// News is written into the page at the build (for search engines); the browser
+// then reads the sheet again, so new items show without waiting for a rebuild.
+// Until the sheet is published, the starter file is used.
+// The French and German pages use the sheet's Text FR / Text DE columns when filled in.
+let news = [];
+if (SHEET_CSV_URL) {
+  try {
+    const res = await fetch(SHEET_CSV_URL, { signal: AbortSignal.timeout(20000) });
+    if (res.ok) news = recordsFromCSV(await res.text());
+  } catch {}
+} else {
+  news = recordsFromCSV(starterNews);
+}
+const shown = current(news);
+const seeHere = ui[lang].seeHere;
+
+const t = pick(lang, {
+  en: {
+    title: 'Home', news: 'News', highlights: 'Highlights', join: 'Join a workshop - Register your interest',
+    cards: [
+      'Music4Resilience creates a <b>community-based music lab</b>: four participatory, hands-on workshops in which <b>youth workers</b> explore music as a tool to support vulnerable young people.',
+      'Workshops connect music with <b>mental health and socio-emotional skills</b>: emotion awareness and regulation, communication, self-confidence and collaboration, supported by <b>easy-to-use music technology</b>.',
+      'Co-created with practitioners, the materials are <b>accessible, culturally sensitive and transferable</b>, and shared openly so that music-informed practice can take root in <b>youth settings across Luxembourg</b>.',
+    ],
+  },
+  fr: {
+    title: 'Accueil', news: 'Actualités', highlights: 'Points forts', join: 'Participer à un atelier - Manifester votre intérêt',
+    cards: [
+      'Music4Resilience crée un <b>laboratoire musical communautaire</b> : quatre ateliers participatifs et pratiques dans lesquels les <b>professionnels de la jeunesse</b> explorent la musique comme outil pour accompagner les jeunes vulnérables.',
+      'Les ateliers relient la musique à la <b>santé mentale et aux compétences socio-émotionnelles</b> : conscience et régulation des émotions, communication, confiance en soi et collaboration, avec l’appui de <b>technologies musicales faciles à utiliser</b>.',
+      'Co-créés avec des praticiens, les supports sont <b>accessibles, culturellement adaptés et transférables</b>, et partagés librement afin que les pratiques fondées sur la musique s’ancrent dans les <b>structures jeunesse de tout le Luxembourg</b>.',
+    ],
+  },
+  de: {
+    title: 'Start', news: 'Neuigkeiten', highlights: 'Highlights', join: 'An einem Workshop teilnehmen - Interesse anmelden',
+    cards: [
+      'Music4Resilience schafft ein <b>gemeinschaftsbasiertes Musiklabor</b>: vier partizipative, praxisnahe Workshops, in denen <b>Fachkräfte der Jugendarbeit</b> Musik als Mittel zur Unterstützung vulnerabler junger Menschen erkunden.',
+      'Die Workshops verbinden Musik mit <b>psychischer Gesundheit und sozial-emotionalen Kompetenzen</b>: Emotionen wahrnehmen und regulieren, Kommunikation, Selbstvertrauen und Zusammenarbeit, unterstützt durch <b>einfach zu bedienende Musiktechnologie</b>.',
+      'Gemeinsam mit Fachleuten aus der Praxis entwickelt, sind die Materialien <b>zugänglich, kultursensibel und übertragbar</b> und werden frei geteilt, damit musikbasierte Praxis in <b>Jugendeinrichtungen in ganz Luxemburg</b> Fuß fassen kann.',
+    ],
+  },
+});
+---
+<Base title={t.title} path="/" lang={lang}>
+  <section class="news" id="news" hidden={!shown.length}>
+    <div class="wrap">
+      <div class="news-box">
+        <h2>{t.news}</h2>
+        <div id="news-list" data-see-here={seeHere} data-lang={lang} set:html={newsHtml(shown, seeHere, lang)}></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hl">
+    <div class="wrap">
+      <h2>{t.highlights}</h2>
+      <div class="cards">
+        {t.cards.map((c, i) => <p class={i === 1 ? 'card pink' : 'card'} set:html={c} />)}
+      </div>
+      <div class="social">
+        <a href="https://www.instagram.com/bemunilu/" target="_blank" rel="noopener"><img src="/images/icon-instagram.png" alt="Instagram" width="24" height="24" /></a>
+        <a href="https://www.linkedin.com/in/lucnijs/" target="_blank" rel="noopener"><img src="/images/icon-linkedin.png" alt="LinkedIn" width="24" height="24" /></a>
+      </div>
+      <p class="join"><a class="btn wide" href={href(lang, JOIN_LINK)}>{t.join}</a></p>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { SHEET_CSV_URL, recordsFromCSV, current, newsHtml } from '../../lib/news.js';
+  if (SHEET_CSV_URL) {
+    // Cache-bust per minute so a sheet edit is not masked by a stale copy.
+    fetch(SHEET_CSV_URL + '&v=' + Math.floor(Date.now() / 60000), { cache: 'no-cache' })
+      .then((res) => { if (!res.ok) throw new Error('HTTP ' + res.status); return res.text(); })
+      .then((text) => {
+        const shown = current(recordsFromCSV(text));
+        const list = document.getElementById('news-list');
+        const fresh = document.createElement('div');
+        fresh.innerHTML = newsHtml(shown, list.dataset.seeHere, list.dataset.lang);
+        // Redraw only when the news changed, so pictures already showing don't reload.
+        if (fresh.innerHTML !== list.innerHTML) list.innerHTML = fresh.innerHTML;
+        document.getElementById('news').hidden = !shown.length;
+      })
+      .catch(() => {});
+  }
+</script>

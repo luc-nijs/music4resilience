@@ -1,0 +1,38 @@
+---
+import Base from '../../layouts/Base.astro';
+import { CONTACT_TO } from '../../data/nav.js';
+import { langPaths, pick } from '../../i18n.js';
+// A form that opens the visitor's own email program, as on the other sites.
+
+export function getStaticPaths() { return langPaths(); }
+const { lang } = Astro.props;
+const t = pick(lang, {
+  en: { title: 'Contact', heading: 'Contact us', first: 'First name *', last: 'Last name', aff: 'Organisation', email: 'Email *', msg: 'Write a message', submit: 'Submit', subject: 'via website' },
+  fr: { title: 'Contact', heading: 'Nous contacter', first: 'Prénom *', last: 'Nom', aff: 'Organisation', email: 'E-mail *', msg: 'Votre message', submit: 'Envoyer', subject: 'via le site web' },
+  de: { title: 'Kontakt', heading: 'Kontaktieren Sie uns', first: 'Vorname *', last: 'Nachname', aff: 'Organisation', email: 'E-Mail *', msg: 'Ihre Nachricht', submit: 'Senden', subject: 'über die Website' },
+});
+---
+<Base title={t.title} path="/contact" lang={lang}>
+  <section class="contact">
+    <form id="contact-form" data-to={CONTACT_TO} data-subject={t.subject}>
+      <h1>{t.heading}</h1>
+      <div class="two">
+        <div><label for="first">{t.first}</label><input id="first" name="first" required autocomplete="given-name" /></div>
+        <div><label for="last">{t.last}</label><input id="last" name="last" autocomplete="family-name" /></div>
+      </div>
+      <label for="aff">{t.aff}</label><input id="aff" name="aff" autocomplete="organization" />
+      <label for="email">{t.email}</label><input id="email" name="email" type="email" required autocomplete="email" />
+      <label for="msg">{t.msg}</label><textarea id="msg" name="msg"></textarea>
+      <button class="btn dark" type="submit">{t.submit}</button>
+    </form>
+  </section>
+  <script is:inline>
+    document.getElementById('contact-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var f = e.target, v = function (n) { return f.elements[n].value.trim(); };
+      var name = (v('first') + ' ' + v('last')).trim();
+      var body = v('msg') + '\n\n' + name + (v('aff') ? '\n' + v('aff') : '') + '\n' + v('email');
+      location.href = 'mailto:' + f.dataset.to + '?subject=' + encodeURIComponent(f.dataset.subject) + '&body=' + encodeURIComponent(body);
+    });
+  </script>
+</Base>

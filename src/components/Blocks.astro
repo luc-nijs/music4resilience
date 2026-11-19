@@ -1,8 +1,10 @@
 ---
 // A grid of coloured blocks. A block with an href is a link; without one it shows "Coming soon".
+import { ui } from '../i18n.js';
 interface Item { title: string; text?: string; href?: string; num?: string }
-interface Props { items: Item[]; cols?: 2 | 3 }
-const { items, cols = 2 } = Astro.props;
+interface Props { items: Item[]; cols?: 2 | 3; lang?: string }
+const { items, cols = 2, lang = 'en' } = Astro.props;
+const t = ui[lang];
 ---
 <div class={`blocks cols-${cols}`}>
   {items.map((it) => {
@@ -11,7 +13,7 @@ const { items, cols = 2 } = Astro.props;
         {it.num && <p class="num">{it.num}</p>}
         <h3>{it.title}</h3>
         {it.text && <p>{it.text}</p>}
-        <p class="go">{it.href ? 'Open →' : 'Coming soon'}</p>
+        <p class="go">{it.href ? t.open : t.soon}</p>
       </>
     );
     return it.href

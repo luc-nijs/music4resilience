@@ -1,0 +1,18 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Crumbs from '../../../components/Crumbs.astro';
+import { langPaths, pick, ui } from '../../../i18n.js';
+
+export function getStaticPaths() { return langPaths(); }
+const { lang } = Astro.props;
+const title = pick(lang, { en: 'Manual & Workbook', fr: 'Manuel & cahier d’exercices', de: 'Handbuch & Arbeitsheft' });
+---
+<Base title={title} path="/resources/manual-workbook" lang={lang}>
+  <section class="resources">
+    <div class="wrap">
+      <Crumbs lang={lang} trail={[{ label: title }]} />
+      <h2 class="title">{title}</h2>
+      <p class="intro none">{ui[lang].soon}.</p>
+    </div>
+  </section>
+</Base>

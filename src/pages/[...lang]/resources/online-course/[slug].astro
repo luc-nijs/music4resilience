@@ -1,0 +1,12 @@
+---
+import ItemPage from '../../../../components/ItemPage.astro';
+import { courseModules } from '../../../../data/resources.js';
+import { langPaths, pick } from '../../../../i18n.js';
+
+export function getStaticPaths() {
+  return langPaths().flatMap(({ params, props: { lang } }) =>
+    courseModules(lang).map((item) => ({ params: { ...params, slug: item.slug }, props: { lang, item } })));
+}
+const { lang, item } = Astro.props;
+---
+<ItemPage item={item} items={courseModules(lang)} section={pick(lang, { en: 'Online course', fr: 'Cours en ligne', de: 'Online-Kurs' })} base="/resources/online-course" lang={lang} />

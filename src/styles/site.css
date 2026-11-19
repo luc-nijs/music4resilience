@@ -26,7 +26,12 @@ p { margin: 0; }
 .wrap { width: min(var(--page), 100% - 32px); margin-inline: auto; }
 
 /* Header */
-.site-header { width: min(var(--page), 100% - 32px); text-align: center; margin: 0 auto; padding-top: 2px; }
+.site-header { width: min(var(--page), 100% - 32px); text-align: center; margin: 0 auto; padding-top: 2px; position: relative; }
+.langs { position: absolute; top: 10px; right: 0; }
+.langs ul { margin: 0; padding: 0; list-style: none; display: flex; gap: 4px; }
+.langs a { color: var(--navy); font: 800 13px/1 var(--sans); letter-spacing: .08em; text-decoration: none; display: block; padding: 7px 9px; border: 1px solid transparent; }
+.langs a:hover { border-color: var(--navy); }
+.langs a[aria-current] { background: var(--navy); color: #fff; }
 .brand { font: 700 96px/1.33 var(--serif); margin: 0; }
 .brand a { color: var(--ink); text-decoration: none; }
 .brand .four { color: var(--rust); }
@@ -184,6 +189,7 @@ a.block:hover .num, a.block:hover .go { color: #fff; }
 
 /* Phone */
 @media (max-width: 760px) {
+  .langs { position: static; display: flex; justify-content: flex-end; padding-top: 8px; }
   .brand { font-size: 40px; }
   .tagline { letter-spacing: .2em; margin-bottom: 20px; font-size: 14px; line-height: 1.8; }
   .menu-toggle { background: var(--navy); color: #fff; width: 100%; font: 800 15px/48px var(--sans); cursor: pointer; border: 0; display: block; }

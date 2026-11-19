@@ -1,27 +1,31 @@
 ---
 // One workshop or course-module page, with previous/next links.
+// base is the English address of the section (/resources/workshops).
 import Base from '../layouts/Base.astro';
 import Crumbs from './Crumbs.astro';
+import { href, ui } from '../i18n.js';
 interface Item { slug: string; num: string; title: string; text?: string }
-interface Props { item: Item; items: Item[]; section: string; base: string }
-const { item, items, section, base } = Astro.props;
+interface Props { item: Item; items: Item[]; section: string; base: string; lang?: string }
+const { item, items, section, base, lang = 'en' } = Astro.props;
+const t = ui[lang];
 const i = items.findIndex((x) => x.slug === item.slug);
 const prev = items[i - 1];
 const next = items[i + 1];
+const at = (slug) => href(lang, `${base}/${slug}`);
 ---
-<Base title={item.title} path={`${base}/${item.slug}`}>
+<Base title={item.title} path={`${base}/${item.slug}`} lang={lang}>
   <section class="resources">
     <div class="wrap">
-      <Crumbs trail={[{ label: section, href: base }, { label: item.title }]} />
+      <Crumbs lang={lang} trail={[{ label: section, href: href(lang, base) }, { label: item.title }]} />
       <p class="item-num">{item.num}</p>
       <h2 class="title">{item.title}</h2>
       {item.text && <p class="intro">{item.text}</p>}
       <div class="item-body">
-        <slot><p class="none">Content coming soon.</p></slot>
+        <slot><p class="none">{t.contentSoon}</p></slot>
       </div>
-      <nav class="pager" aria-label={`${section} pages`}>
-        {prev ? <a href={`${base}/${prev.slug}`}>← {prev.title}</a> : <span></span>}
-        {next ? <a href={`${base}/${next.slug}`}>{next.title} →</a> : <span></span>}
+      <nav class="pager" aria-label={`${section} ${t.pages}`}>
+        {prev ? <a href={at(prev.slug)}>← {prev.title}</a> : <span></span>}
+        {next ? <a href={at(next.slug)}>{next.title} →</a> : <span></span>}
       </nav>
     </div>
   </section>

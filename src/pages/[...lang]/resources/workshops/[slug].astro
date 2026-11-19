@@ -1,0 +1,12 @@
+---
+import ItemPage from '../../../../components/ItemPage.astro';
+import { workshops } from '../../../../data/resources.js';
+import { langPaths, pick } from '../../../../i18n.js';
+
+export function getStaticPaths() {
+  return langPaths().flatMap(({ params, props: { lang } }) =>
+    workshops(lang).map((item) => ({ params: { ...params, slug: item.slug }, props: { lang, item } })));
+}
+const { lang, item } = Astro.props;
+---
+<ItemPage item={item} items={workshops(lang)} section={pick(lang, { en: 'Workshops', fr: 'Ateliers', de: 'Workshops' })} base="/resources/workshops" lang={lang} />

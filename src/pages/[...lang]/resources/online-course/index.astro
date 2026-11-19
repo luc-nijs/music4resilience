@@ -1,0 +1,21 @@
+---
+import Base from '../../../../layouts/Base.astro';
+import Blocks from '../../../../components/Blocks.astro';
+import Crumbs from '../../../../components/Crumbs.astro';
+import { courseModules } from '../../../../data/resources.js';
+import { langPaths, href, pick } from '../../../../i18n.js';
+
+export function getStaticPaths() { return langPaths(); }
+const { lang } = Astro.props;
+const title = pick(lang, { en: 'Online course', fr: 'Cours en ligne', de: 'Online-Kurs' });
+const items = courseModules(lang).map((x) => ({ ...x, href: href(lang, `/resources/online-course/${x.slug}`) }));
+---
+<Base title={title} path="/resources/online-course" lang={lang}>
+  <section class="resources">
+    <div class="wrap">
+      <Crumbs lang={lang} trail={[{ label: title }]} />
+      <h2 class="title">{title}</h2>
+      <Blocks items={items} cols={3} lang={lang} />
+    </div>
+  </section>
+</Base>
