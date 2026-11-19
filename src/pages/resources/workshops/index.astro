@@ -1,0 +1,17 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Blocks from '../../../components/Blocks.astro';
+import Crumbs from '../../../components/Crumbs.astro';
+import { workshops } from '../../../data/resources.js';
+
+const items = workshops.map((x) => ({ ...x, href: `/resources/workshops/${x.slug}` }));
+---
+<Base title="Workshops" path="/resources/workshops">
+  <section class="resources">
+    <div class="wrap">
+      <Crumbs trail={[{ label: 'Workshops' }]} />
+      <h2 class="title">Workshops</h2>
+      <Blocks items={items} />
+    </div>
+  </section>
+</Base>

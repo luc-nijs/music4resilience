@@ -1,0 +1,10 @@
+---
+import ItemPage from '../../../components/ItemPage.astro';
+import { workshops } from '../../../data/resources.js';
+
+export function getStaticPaths() {
+  return workshops.map((item) => ({ params: { slug: item.slug }, props: { item } }));
+}
+const { item } = Astro.props;
+---
+<ItemPage item={item} items={workshops} section="Workshops" base="/resources/workshops" />

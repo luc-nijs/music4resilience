@@ -1,0 +1,28 @@
+---
+// One workshop or course-module page, with previous/next links.
+import Base from '../layouts/Base.astro';
+import Crumbs from './Crumbs.astro';
+interface Item { slug: string; num: string; title: string; text?: string }
+interface Props { item: Item; items: Item[]; section: string; base: string }
+const { item, items, section, base } = Astro.props;
+const i = items.findIndex((x) => x.slug === item.slug);
+const prev = items[i - 1];
+const next = items[i + 1];
+---
+<Base title={item.title} path={`${base}/${item.slug}`}>
+  <section class="resources">
+    <div class="wrap">
+      <Crumbs trail={[{ label: section, href: base }, { label: item.title }]} />
+      <p class="item-num">{item.num}</p>
+      <h2 class="title">{item.title}</h2>
+      {item.text && <p class="intro">{item.text}</p>}
+      <div class="item-body">
+        <slot><p class="none">Content coming soon.</p></slot>
+      </div>
+      <nav class="pager" aria-label={`${section} pages`}>
+        {prev ? <a href={`${base}/${prev.slug}`}>← {prev.title}</a> : <span></span>}
+        {next ? <a href={`${base}/${next.slug}`}>{next.title} →</a> : <span></span>}
+      </nav>
+    </div>
+  </section>
+</Base>

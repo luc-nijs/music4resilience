@@ -1,0 +1,20 @@
+---
+import Base from '../../layouts/Base.astro';
+import Blocks from '../../components/Blocks.astro';
+
+const items = [
+  { title: 'Workshops', text: 'The four Music4Resilience workshops: programme, guidelines and materials.', href: '/resources/workshops' },
+  { title: 'Manual & Workbook', text: 'The practitioner manual and the accompanying workbook.', href: '/resources/manual-workbook' },
+  { title: 'Online course', text: 'Self-paced modules on music, well-being and youth work.', href: '/resources/online-course' },
+  { title: 'Reports', text: 'Project reports and evaluation results.', href: '/resources/reports' },
+];
+---
+<Base title="Resources" path="/resources">
+  <section class="resources">
+    <div class="wrap">
+      <h2 class="title">Resources</h2>
+      <p class="intro">Materials for youth workers who want to use music in their work with young people.</p>
+      <Blocks items={items} />
+    </div>
+  </section>
+</Base>

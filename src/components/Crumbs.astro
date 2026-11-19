@@ -1,0 +1,14 @@
+---
+// "Resources › Workshops › Workshop 1" trail at the top of a subpage. The last item is the current page.
+interface Props { trail: { label: string; href?: string }[] }
+const { trail } = Astro.props;
+const all = [{ label: 'Resources', href: '/resources' }, ...trail];
+---
+<p class="crumbs">
+  {all.map((c, i) => (
+    <>
+      {i > 0 && <span aria-hidden="true"> › </span>}
+      {c.href && i < all.length - 1 ? <a href={c.href}>{c.label}</a> : <span>{c.label}</span>}
+    </>
+  ))}
+</p>

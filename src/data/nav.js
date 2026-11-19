@@ -2,6 +2,7 @@
 export const nav = [
   { label: 'Home', href: '/' },
   { label: 'Project', href: '/project' },
+  { label: 'Resources', href: '/resources' },
   { label: 'Dissemination', href: '/dissemination' },
   { label: 'Team', href: '/team' },
   { label: 'Partners', href: '/partners' },

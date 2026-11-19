@@ -36,7 +36,7 @@ const fullTitle = path === '/' ? 'Music4Resilience | music & youth work' : `${ti
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu-list">Menu</button>
         <ul id="menu-list">
           {nav.map((item) => (
-            <li><a href={item.href} aria-current={item.href === path ? 'page' : undefined}>{item.label}</a></li>
+            <li><a href={item.href} aria-current={item.href === path || (item.href !== '/' && path.startsWith(item.href + '/')) ? 'page' : undefined}>{item.label}</a></li>
           ))}
         </ul>
       </nav>

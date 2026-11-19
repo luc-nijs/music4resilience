@@ -1,0 +1,21 @@
+---
+// A grid of coloured blocks. A block with an href is a link; without one it shows "Coming soon".
+interface Item { title: string; text?: string; href?: string; num?: string }
+interface Props { items: Item[]; cols?: 2 | 3 }
+const { items, cols = 2 } = Astro.props;
+---
+<div class={`blocks cols-${cols}`}>
+  {items.map((it) => {
+    const inner = (
+      <>
+        {it.num && <p class="num">{it.num}</p>}
+        <h3>{it.title}</h3>
+        {it.text && <p>{it.text}</p>}
+        <p class="go">{it.href ? 'Open →' : 'Coming soon'}</p>
+      </>
+    );
+    return it.href
+      ? <a class="block" href={it.href}>{inner}</a>
+      : <div class="block soon">{inner}</div>;
+  })}
+</div>
